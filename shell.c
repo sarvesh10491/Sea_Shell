@@ -103,6 +103,34 @@ int cmd_execute(char **args)
 }
 
 
+char *getCmdOp(char *srcCmd) 
+{
+    char *buf = malloc(1024);
+    char *tmp;
+    int i = 0;
+    FILE *p = popen(srcCmd,"r");
+
+    if (p){
+        char ch;
+
+        while((ch=fgetc(p)) != EOF){
+            buf[i++] = ch;
+        }
+        buf[--i] = '\0';
+        tmp = malloc(strlen(buf));
+        strcpy(tmp,buf);
+
+        pclose(p);
+        
+        return tmp;
+    }
+    else{
+        pclose(p);
+        return NULL;
+    }
+}
+
+
 void shell_loop()
 {
     char *cmdline;
@@ -112,7 +140,10 @@ void shell_loop()
 
     do{
         getcwd(cwd, sizeof(cwd)); 
-        printf("%s => ", cwd);
+        char *cmd1 = getCmdOp("whoami");
+        char *cmd2 = getCmdOp("hostname");
+
+        printf("%s@%s:%s => ", cmd1, cmd2, cwd);
 
         cmdline = cmdline_read();
         cmdargs = cmdline_split(cmdline);
