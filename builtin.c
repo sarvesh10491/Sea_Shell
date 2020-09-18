@@ -11,43 +11,53 @@
 //==================================
 
 int shell_builtins_cnt() {
-  return sizeof(builtin_cmdstr) / sizeof(char *);
+    return sizeof(builtin_cmdstr) / sizeof(char *);
 }
 
 
 int shell_cd(char **args)
 {
-  if(args[1] == NULL){
-    fprintf(stderr, "Shell: expected argument to \"cd\"\n");
-  } 
-  else{
-    if(chdir(args[1]) != 0){
-      perror("Shell");
+    if(args[1] == NULL){
+        fprintf(stderr, "Shell: expected argument to \"cd\"\n");
+    } 
+    else{
+        if(chdir(args[1]) != 0){
+            perror("Shell");
+        }
     }
-  }
-  return 1;
+    return 1;
 }
 
 
 int shell_help(char **args)
 {
-  int i;
-  printf("Custom shell\n");
-  printf("Type program names and arguments, and hit enter.\n");
-  printf("The following are built in:\n");
+    int i;
+    printf("Custom shell\n");
+    printf("Type program names and arguments, and hit enter.\n");
+    printf("The following are built in:\n");
 
-  for (i = 0; i < shell_builtins_cnt(); i++) {
-    printf("  %s\n", builtin_cmdstr [i]);
-  }
+    for (i = 0; i < shell_builtins_cnt(); i++) {
+        printf("  %s\n", builtin_cmdstr [i]);
+    }
 
-  printf("Use the man command for information on other programs.\n");
-  return 1;
+    printf("Use the man command for information on other programs.\n");
+    return 1;
 }
 
 
 int shell_exit(char **args)
 {
-  return 0;
+    return 0;
+}
+
+int shell_ll(char **args)
+{
+    char *cmdName = "ls";
+    char *cmdargs[] = {cmdName, "-lrt", NULL, NULL};
+
+    execvp(cmdName, cmdargs);
+
+    return 1;
 }
 //####################
 // End of builtin.c
