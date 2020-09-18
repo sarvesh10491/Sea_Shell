@@ -143,7 +143,22 @@ void shell_loop()
         char *cmd1 = getCmdOp("whoami");
         char *cmd2 = getCmdOp("hostname");
 
-        printf("%s@%s:%s => ", cmd1, cmd2, cwd);
+        printf("\033[01;33m");
+        printf("%s", cmd1);
+
+        printf("\033[1;31m");
+        printf("@");
+
+        printf("\033[0;33m");
+        printf("%s", cmd2);
+
+        printf("\033[1;31m");
+        printf(":");
+
+        printf("\033[0;36m");
+        printf("%s => ", cwd);
+
+        printf("\033[0m");
 
         cmdline = cmdline_read();
         cmdargs = cmdline_split(cmdline);
@@ -151,7 +166,7 @@ void shell_loop()
 
         free(cmdline);
         free(cmdargs);
-        
+
     } while (status);
 }
 //####################
