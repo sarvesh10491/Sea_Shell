@@ -67,8 +67,9 @@ int shell_launch(char **args)
     int status;
 
     pid = fork();
+
     if (pid == 0) {   // Child process
-        if (execvp(args[0], args) == -1){
+        if(execvp(args[0], args) == -1){
             perror("SeaShell");
         }
         exit(EXIT_FAILURE);
@@ -92,10 +93,17 @@ int cmd_execute(char **args)
 
     if(args[0] == NULL)     // Check : empty command input
         return 1;
+        
 
     for(i = 0; i < shell_builtins_cnt(); i++){
         if(strcmp(args[0], builtin_cmdstr[i]) == 0){
             return (*builtin_func[i])(args);
+        }
+    }
+
+    for(i = 0; i < shell_custom_cnt(); i++){
+        if(strcmp(args[0], custom_cmdstr[i]) == 0){
+            (*custom_func[i])(&args);
         }
     }
 

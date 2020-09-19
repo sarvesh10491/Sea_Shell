@@ -14,6 +14,10 @@ int shell_builtins_cnt() {
     return sizeof(builtin_cmdstr) / sizeof(char *);
 }
 
+int shell_custom_cnt() {
+    return sizeof(custom_cmdstr) / sizeof(char *);
+}
+
 
 int shell_cd(char **args)
 {
@@ -22,7 +26,7 @@ int shell_cd(char **args)
     } 
     else{
         if(chdir(args[1]) != 0){
-            perror("Shell");
+            perror("SeaShell");
         }
     }
     return 1;
@@ -50,14 +54,11 @@ int shell_exit(char **args)
     return 0;
 }
 
-int shell_ll(char **args)
+
+void shell_ll(char ***args)
 {
-    char *cmdName = "ls";
-    char *cmdargs[] = {cmdName, "-lrt", NULL, NULL};
-
-    execvp(cmdName, cmdargs);
-
-    return 1;
+    (*args)[0] = "ls";
+    (*args)[1] = "-lrt";
 }
 //####################
 // End of builtin.c
